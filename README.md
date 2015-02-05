@@ -1,56 +1,49 @@
 ### Generate Bills from Apples Financial Reports
-Apple generates financial reports in txt format. The German tax office wants to see the bills. This script helps to generate the bills from the financial reports.
+Apple generates financial reports in txt format. The German tax office wants to see bills. This program helps you to generate bills from the financial reports.
 
 ### Important Note
-Use this at your own risk. I am not responsible for any lost data on your machine. The script removes temporary files after it ran. Therefore you should create a dictionary for your financial reports and run the script in that directory..
+Use this at your own risk. I am not responsible for any lost data on your machine. You should create a directory for your financial reports and run the program in that directory.
 
-To create the bills for the tax office with this script works for me. Before you submit the bills check with your tax consultant! I am not responsible for any problems you have with your tax office because of this script.
-
-### What you need
-You need pdflatex on your machine. And you should be able to edit LaTeX files because you have to add your address in the head.tex file.
+Creating bills for the tax office with this program works for me. Before you submit the bills you should check them with your tax consultant! I am not responsible for any problems you have with your tax office because of this program.
 
 ### How it works
 Read the Imortant Note. Read it again!
 
-For every month generate a dictionary. Let's say you want to generate the bills for December 2012. You could do this:
+Create a directory for every month. Let's say you want to generate the bills for December 2014. You could do this:
 
 ```
 $ cd ~/Documents
 $ mkdir financial_reports; cd financial_reports
-$ mkdir 1212; cd 1212
+$ mkdir 1214; cd 1214
 ```
 
-Download all financial reports from iTunes Connect for that month into that directory.
+Download all financial reports from iTunes Connect for this month into that directory.
 
-Copy and past the exchange rates from "Payments & Financial Reports > Payments" within your iTunes Connect and put it into a file called factors.txt. Put that file into the directory with the reports (1212/ in the example). It should look like this:
+Copy the exchange rates from "iTunes Connect > Payments & Financial Reports > Payments" for this month and paste them in a file called "factors.txt". Put this file into the directory with your reports (1214/ in the example). It should look like this:
 
 ```
-AUD      0.00    13.97   13.97   0.00    0.00    0.00    13.97   0.77022         10.76  EUR
-CHF      0.00    33.15   33.15   0.00    0.00    0.00    33.15   0.80030         26.53  EUR
-DKK      0.00    23.73   23.73   0.00    0.00    0.00    23.73   0.13359         3.17   EUR
-EUR      0.00    247.84  247.84  0.00    0.00    0.00    247.84  1.00000         247.84 EUR
-GBP      0.00    4.55    4.55    0.00    0.00    0.00    4.55    1.16484         5.30   EUR
-INR      0.00    77.00   77.00   0.00    0.00    0.00    77.00   0.01351         1.04   EUR
-JPY      0       179     179     -37     0       0       142     0.00817         1.16   EUR
-MXN      0.00    18.20   18.20   0.00    0.00    0.00    18.20   0.05824         1.06   EUR
-NOK      0.00    7.84    7.84    0.00    0.00    0.00    7.84    0.13393         1.05   EUR
-NZD      0.00    1.81    1.81    0.00    0.00    0.00    1.81    0.61326         1.11   EUR
-RUB      0.00    138.60  138.60  0.00    0.00    0.00    138.60  0.02395         3.32   EUR
-SEK      0.00    4.26    4.26    0.00    0.00    0.00    4.26    0.11502         0.49   EUR
-SGD      0.00    1.81    1.81    0.00    0.00    0.00    1.81    0.60221         1.09   EUR
-USD      0.00    58.10   58.10   0.00    0.00    0.00    58.10   0.74200         43.11  EUR
-ZAR      0.00    11.19   11.19   0.00    0.00    0.00    11.19   0.08311         0.93   EUR
+CHF	0.00	1.30	1.30	0.00	0.00	0.00	1.30	0.99231	1.29	EUR
+EUR	0.00	10.60	10.60	0.00	0.00	0.00	10.60	1.00000	10.60	EUR
+GBP	0.00	4.54	4.54	0.00	0.00	0.00	4.54	1.33260	6.05	EUR
+IDR	0.00	8,400.00	8,400.00	0.00	0.00	0.00	8,400.00	0.00007	0.59	EUR
+ILS	0.00	4.83	4.83	0.00	0.00	0.00	4.83	0.22360	1.08	EUR
+JPY	0	1,750	1,750	-358	0	0	1,392	0.00750	10.44	EUR
+NOK	0.00	10.64	10.64	0.00	0.00	0.00	10.64	0.11372	1.21	EUR
+TWD	0.00	42.00	42.00	0.00	0.00	0.00	42.00	0.02905	1.22	EUR
+USD	0.00	52.50	52.50	0.00	0.00	0.00	52.50	0.88819	46.63	EUR
+USD - RoW	0.00	1.40	1.40	0.00	0.00	0.00	1.40	0.88571	1.24	EUR
 ```
 
-Set your address in head.tex: Open head.tex with your favorite text editor and search for Mustermann. Change the template address. Then do:
+Enter your name and address in head.md: Open head.md with your favorite markdown editor and replace the template name/adress/vat. Then do:
 
 ```
 $ cd ~/Documents/financial_reports
-$ perl summarize.pl 1212 head.tex tail.tex
+$ ./summarize 1214 head.md tail.md
 ```
 
-Now you should have files called bill_1212.pdf and bill_1212.tex in that directory. 
+Now you should have a file called "iTunes Connect Bill 1214.md" in this directory. 
 
 Done.
 
-[![endorse](https://api.coderwall.com/dasdom/endorsecount.png)](https://coderwall.com/dasdom)
+### Acknowledgement
+This ObjC program is based on a [perl script](https://github.com/dasdom/CreateAppStoreBill) written by [@dasdom](https://github.com/dasdom). Thanks so much Dominik!

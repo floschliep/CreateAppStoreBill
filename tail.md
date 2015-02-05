@@ -1,0 +1,1 @@
+Die Steuer auf die erbrachte Leistung ist 0 EUR, da der Leistungsort in Luxemburg liegt. Somit ist die Leistung nicht steuerbar.

@@ -42,8 +42,13 @@ $ ./summarize 1214 head.md tail.md
 ```
 
 Now you should have a file called "iTunes Connect Bill 1214.md" in this directory. 
-
 Done.
+
+### Compatibility
+You can open and compile the summarize.m file in e.g. [CodeRunner](https://coderunnerapp.com), though you don’t need to as the executable is already in this repo. The program makes use of ARC, so make sure your compile flags look like:
+```
+-fobjc-arc -framework Foundation
+```
 
 ### Acknowledgement
 This ObjC program is based on a [perl script](https://github.com/dasdom/CreateAppStoreBill) written by [@dasdom](https://github.com/dasdom). Thanks so much Dominik!

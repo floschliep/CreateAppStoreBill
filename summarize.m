@@ -18,8 +18,8 @@ static NSString * const QuantityKey = @"Quantity";
 - (NSDecimalNumber *)absoluteValue;
 @end
 
-@interface NSString (decimalNumber)
-- (NSString *)cleanUpDecimalNumber;
+@interface NSString (cleanNumber)
+- (NSString *)cleanUpNumber;
 @end
 
 int main(int argc, char *argv[]) {
@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
 		NSString *headFilename = nil;
 		NSString *tailFilename = nil;
 		
-		for (int i = 0; i <= 3; i++) {
+		for (NSInteger i = 0; i <= 3; i++) {
 			if (!argv[i]) {
 				break;
 			}
@@ -109,8 +109,9 @@ int main(int argc, char *argv[]) {
 				
 				NSDecimalNumber *exchangeFactor = factors[sale[CurrencyKey]][ExchangeFactorKey];
 				NSDecimalNumber *withholdingTaxFactor = factors[sale[CurrencyKey]][WithholdingTaxFactorKey];
-				
-				double total = [sale[EarningsKey] doubleValue]*[sale[QuantityKey] integerValue]*exchangeFactor.doubleValue*withholdingTaxFactor.doubleValue;
+				double earnings = [[sale[EarningsKey] cleanUpNumber] doubleValue];
+				NSInteger quantity = [[sale[QuantityKey] cleanUpNumber] integerValue];
+				double total = earnings*quantity*exchangeFactor.doubleValue*withholdingTaxFactor.doubleValue;
 				totalEarnings += total;
 				
 				NSString *currency = sale[CurrencyKey];
@@ -118,7 +119,7 @@ int main(int argc, char *argv[]) {
 					currency = @"USD";
 				}
 				
-				[body appendFormat:@"| %@ | %@ %@ | %@ | %@ | %.2f EUR |\n", sale[AppIDKey], sale[EarningsKey], currency, sale[QuantityKey], exchangeFactor, total];
+				[body appendFormat:@"| %@ | %.2f %@ | %li | %@ | %.2f EUR |\n", sale[AppIDKey], earnings, currency, quantity, exchangeFactor, total];
 			}];
 		}];
 		
@@ -148,9 +149,9 @@ NSDictionary *parseFactorsFile(NSURL *fileURL) {
 	NSMutableDictionary *factors = [NSMutableDictionary dictionary];
 	[lines enumerateObjectsUsingBlock:^(NSArray *lineComponents, NSUInteger idx, BOOL *stop) {
 		NSString *currency = lineComponents[0];
-		NSDecimalNumber *subtotal = [NSDecimalNumber decimalNumberWithString:[lineComponents[3] cleanUpDecimalNumber]];
-		NSDecimalNumber *withholdingTax = [NSDecimalNumber decimalNumberWithString:[lineComponents[4] cleanUpDecimalNumber]];
-		NSDecimalNumber *exchangeFactor = [NSDecimalNumber decimalNumberWithString:[lineComponents[8] cleanUpDecimalNumber]];
+		NSDecimalNumber *subtotal = [NSDecimalNumber decimalNumberWithString:[lineComponents[3] cleanUpNumber]];
+		NSDecimalNumber *withholdingTax = [NSDecimalNumber decimalNumberWithString:[lineComponents[4] cleanUpNumber]];
+		NSDecimalNumber *exchangeFactor = [NSDecimalNumber decimalNumberWithString:[lineComponents[8] cleanUpNumber]];
 		NSDecimalNumber *withholdingTaxFactor = [[NSDecimalNumber one] decimalNumberBySubtracting:[[withholdingTax decimalNumberByDividingBy:subtotal] absoluteValue]];
 		factors[currency] = @{ ExchangeFactorKey: exchangeFactor, WithholdingTaxFactorKey: withholdingTaxFactor };
 	}];
@@ -225,9 +226,9 @@ NSArray *getLinesOfTabFile(NSURL *fileURL) {
 
 @end
 
-@implementation NSString (decimalNumber)
+@implementation NSString (cleanNumber)
 
-- (NSString *)cleanUpDecimalNumber {
+- (NSString *)cleanUpNumber {
 	return [self stringByReplacingOccurrencesOfString:@"," withString:@""];
 }
 
